@@ -1,7 +1,7 @@
 import React from "react";
 import mobilesImg from "../assets/mobails.jpg"
 import laptopImg from "../assets/laptop.jpg"
-import tabletsImg from "../assets/tablet.jpg"
+import tabletsImg from "../assets/Tablet.jpg"
 import smartwatchImg from "../assets/smartwatch.jpg"
 export default function PopularCategories() {
   const categories = [
