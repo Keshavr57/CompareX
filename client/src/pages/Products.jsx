@@ -14,7 +14,7 @@ export default function Products() {
   // Fetch products from backend
 // Fetch products from backend
 useEffect(() => {
-    const apiUrl = import.meta.env.VITE_DATABASE_URL
+    const apiUrl = import.meta.env.VITE_DATABASE_URL + "/products"
   
     fetch(apiUrl)
       .then((res) => res.json())
