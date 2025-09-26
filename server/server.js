@@ -7,12 +7,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 const app = express();
 
-// ✅ CORS setup
-app.use(cors({
-  origin: 'https://compare-x-sbix.vercel.app/', // your React frontend URL
-  methods: ['GET','POST','PUT','DELETE'],
-  credentials: true
-}));
+app.use(cors());
 
 app.use(express.json());
 
