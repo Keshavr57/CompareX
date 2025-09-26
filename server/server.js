@@ -9,7 +9,7 @@ const app = express();
 
 // ✅ CORS setup
 app.use(cors({
-  origin: 'http://localhost:5173', // your React frontend URL
+  origin: 'https://compare-x-sbix.vercel.app/', // your React frontend URL
   methods: ['GET','POST','PUT','DELETE'],
   credentials: true
 }));
