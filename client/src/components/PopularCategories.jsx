@@ -1,49 +1,103 @@
 import React from "react";
-import mobilesImg from "../assets/mobails.jpg"
-import laptopImg from "../assets/laptop.jpg"
-import tabletsImg from "../assets/Tablet.jpg"
-import smartwatchImg from "../assets/smartwatch.jpg"
+import { motion } from "framer-motion";
+import { Sparkles } from "lucide-react";
+import mobilesImg from "../assets/mobails.jpg";
+import laptopImg from "../assets/laptop.jpg";
+import tabletsImg from "../assets/Tablet.jpg";
+import smartwatchImg from "../assets/smartwatch.jpg";
+
 export default function PopularCategories() {
   const categories = [
     { name: "Mobiles", image: mobilesImg },
     { name: "Laptops", image: laptopImg },
-    { name: "Tablets", image: tabletsImg},
+    { name: "Tablets", image: tabletsImg },
     { name: "Smartwatches", image: smartwatchImg },
   ];
 
   return (
-    <section className="py-16 lg:py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-900 to-slate-900 -mt-20">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-12 lg:mb-16">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 lg:mb-6">
+    <section className="py-20 px-6 bg-black relative overflow-hidden">
+      {/* Subtle Background */}
+      <div className="absolute inset-0">
+        <div 
+          className="absolute inset-0 opacity-[0.02]"
+          style={{
+            backgroundImage: `
+              linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px)
+            `,
+            backgroundSize: '100px 100px',
+          }}
+        ></div>
+      </div>
+
+      {/* Ambient Glow */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full opacity-10 blur-[120px]"
+          style={{
+            background: 'radial-gradient(circle, rgba(6, 182, 212, 0.3), transparent 70%)',
+          }}
+        />
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="text-center mb-16"
+        >
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 mb-6">
+            <Sparkles className="w-4 h-4 text-cyan-400" />
+            <span className="text-xs font-semibold text-cyan-400 tracking-wider uppercase">
+              Browse Categories
+            </span>
+          </div>
+          
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 text-white">
             Popular Categories
           </h2>
-          <p className="text-gray-300 text-lg sm:text-xl lg:text-2xl max-w-3xl mx-auto leading-relaxed">
+          <p className="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto">
             Explore our most compared product categories
           </p>
-        </div>
+        </motion.div>
         
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+        {/* Categories Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {categories.map((cat, idx) => (
-            <div
+            <motion.div
               key={idx}
-              className="group bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-2xl overflow-hidden hover:border-blue-500/50 hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300 cursor-pointer hover:transform hover:scale-105"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ 
+                duration: 0.5, 
+                delay: idx * 0.1,
+              }}
+              viewport={{ once: true }}
+              className="group cursor-pointer"
             >
-              <div className="relative overflow-hidden">
-                <img
-                  src={cat.image}
-                  alt={cat.name}
-                  className="w-full h-48 sm:h-52 object-cover group-hover:scale-110 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent group-hover:from-blue-900/60 transition-all duration-300"></div>
-                <div className="absolute inset-0 bg-blue-600/0 group-hover:bg-blue-600/20 transition-all duration-300"></div>
+              <div className="relative rounded-2xl border border-white/10 bg-white/5 overflow-hidden hover:border-cyan-500/30 transition-all duration-300">
+                {/* Image */}
+                <div className="relative h-56 overflow-hidden">
+                  <img
+                    src={cat.image}
+                    alt={cat.name}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
+                  <div className="absolute inset-0 bg-cyan-500/0 group-hover:bg-cyan-500/10 transition-all duration-300"></div>
+                </div>
+                
+                {/* Content */}
+                <div className="p-6 text-center">
+                  <h3 className="text-xl font-semibold text-white group-hover:text-cyan-400 transition-colors duration-300">
+                    {cat.name}
+                  </h3>
+                </div>
               </div>
-              <div className="p-6 lg:p-8 text-center">
-                <h3 className="text-xl lg:text-2xl font-semibold text-white group-hover:text-blue-400 transition-colors duration-300">
-                  {cat.name}
-                </h3>
-              </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

@@ -5,8 +5,10 @@ import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Products from "./pages/Products";
 import Compare from "./pages/Compare";
+import BestPrice from "./pages/BestPrice";
 import { CompareProvider } from "./context/CompareContext";
 import ProtectedRoute from "./routes/ProtectedRoute"; // ✅ Import
+import Wishlist from "./pages/Wishlist";
 
 function App() {
   return (
@@ -25,12 +27,30 @@ function App() {
             </ProtectedRoute>
           }
         />
-
+  
         <Route
           path="/compare"
           element={
             <ProtectedRoute>
               <Compare />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/wishlist"
+          element={
+            <ProtectedRoute>
+              <Wishlist />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/best-price/:id"
+          element={
+            <ProtectedRoute>
+              <BestPrice />
             </ProtectedRoute>
           }
         />

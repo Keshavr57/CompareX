@@ -1,14 +1,15 @@
-// src/components/SampleComparison.jsx
 import React, { useEffect } from "react";
 import {
   Star,
   Zap,
   HardDrive,
   Battery,
-  DollarSign,
   Award,
   TrendingUp,
+  Sparkles,
+  ArrowRight,
 } from "lucide-react";
+import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "@clerk/clerk-react";
 
@@ -18,7 +19,6 @@ export default function SampleComparison() {
   const navigate = useNavigate();
   const { isSignedIn } = useUser();
 
-  // ✅ If user just signed in and we had a pending preselect, redirect now
   useEffect(() => {
     const pending = localStorage.getItem(PENDING_KEY);
     if (isSignedIn && pending) {
@@ -74,80 +74,121 @@ export default function SampleComparison() {
     }
   };
 
-  // ✅ Handle "Compare Now"
   const handleCompare = (productId) => {
     if (isSignedIn) {
-      // If logged in → go to product page with preselect
       navigate(`/products?preselect=${encodeURIComponent(productId)}`);
     } else {
-      // If not logged in → save in localStorage & redirect to sign-in
       localStorage.setItem(PENDING_KEY, productId);
       navigate("/sign-in");
     }
   };
 
   return (
-    <div className="py-20 px-6 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
-      <div className="max-w-7xl mx-auto">
+    <div className="py-20 px-6 bg-black relative overflow-hidden">
+      {/* Subtle Background */}
+      <div className="absolute inset-0">
+        <div 
+          className="absolute inset-0 opacity-[0.02]"
+          style={{
+            backgroundImage: `
+              linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px)
+            `,
+            backgroundSize: '100px 100px',
+          }}
+        ></div>
+      </div>
+
+      {/* Ambient Glow */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div
+          className="absolute top-1/3 right-1/4 w-[600px] h-[600px] rounded-full opacity-10 blur-[120px]"
+          style={{
+            background: 'radial-gradient(circle, rgba(168, 85, 247, 0.3), transparent 70%)',
+          }}
+        />
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent mb-6">
-            Compare Top Products
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="text-center mb-16"
+        >
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 mb-6">
+            <Sparkles className="w-4 h-4 text-cyan-400" />
+            <span className="text-xs font-semibold text-cyan-400 tracking-wider uppercase">
+              Top Picks
+            </span>
+          </div>
+          
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
+            <span className="text-white">Compare </span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400">
+              Top Products
+            </span>
           </h2>
-          <p className="text-gray-600 text-xl max-w-3xl mx-auto leading-relaxed">
-            Find the perfect device that matches your needs and budget with our
-            detailed comparison tools
+          <p className="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-4">
+            Find the perfect device that matches your needs and budget
           </p>
-          <div className="flex justify-center items-center gap-2 mt-4">
+          <div className="flex justify-center items-center gap-2">
             <div className="flex">
               {[...Array(5)].map((_, i) => (
                 <Star
                   key={i}
-                  className="w-5 h-5 text-yellow-400 fill-yellow-400"
+                  className="w-4 h-4 text-cyan-400 fill-cyan-400"
                 />
               ))}
             </div>
-            <span className="text-gray-500 ml-2">
+            <span className="text-gray-500 text-sm">
               Trusted by 50,000+ users
             </span>
           </div>
-        </div>
+        </motion.div>
 
         {/* Product Cards */}
-        <div className="grid md:grid-cols-3 gap-8 mb-20">
+        <div className="grid md:grid-cols-3 gap-6 mb-12">
           {products.map((product, index) => (
-            <div
+            <motion.div
               key={product.id}
-              className="group relative bg-white rounded-2xl border border-gray-200 hover:border-blue-300 hover:shadow-2xl transition-all duration-500 overflow-hidden transform hover:-translate-y-2"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ 
+                duration: 0.5, 
+                delay: index * 0.1,
+              }}
+              viewport={{ once: true }}
+              className="group relative"
             >
               {product.popular && (
                 <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10">
-                  <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg flex items-center gap-1">
-                    <Award className="w-4 h-4" />
+                  <div className="bg-gradient-to-r from-cyan-500 to-purple-500 text-white px-4 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1">
+                    <Award className="w-3 h-3" />
                     Most Popular
                   </div>
                 </div>
               )}
 
-              {/* Card Content */}
-              <div className="p-8 text-center relative">
+              <div className="relative rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 hover:border-cyan-500/30 transition-all duration-300 p-6">
                 {/* Product Image */}
                 <div className="mb-6 relative">
-                  <div className="w-32 h-32 mx-auto rounded-2xl overflow-hidden border-4 border-gray-100 group-hover:border-blue-200 transition-all duration-300 shadow-lg">
+                  <div className="w-32 h-32 mx-auto rounded-xl overflow-hidden border border-white/10">
                     <img
                       src={product.image}
                       alt={product.name}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      className="w-full h-full object-cover"
                     />
                   </div>
-                  {/* Floating Badge */}
-                  <div className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-green-500 to-emerald-500 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">
+                  <div className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-cyan-500 to-purple-500 text-white px-3 py-1 rounded-full text-xs font-semibold">
                     #{index + 1} Choice
                   </div>
                 </div>
 
                 {/* Product Info */}
-                <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-blue-600 transition-colors duration-300">
+                <h3 className="text-xl font-semibold text-white mb-3 text-center">
                   {product.name}
                 </h3>
 
@@ -157,35 +198,33 @@ export default function SampleComparison() {
                     {[...Array(5)].map((_, i) => (
                       <Star
                         key={i}
-                        className={`w-4 h-4 ${
+                        className={`w-3 h-3 ${
                           i < Math.floor(product.rating)
-                            ? "text-yellow-400 fill-yellow-400"
-                            : "text-gray-300"
+                            ? "text-cyan-400 fill-cyan-400"
+                            : "text-gray-600"
                         }`}
                       />
                     ))}
                   </div>
-                  <span className="ml-3 text-sm text-gray-600 font-medium">
-                    {product.rating} ({product.reviews} reviews)
+                  <span className="ml-2 text-xs text-gray-500">
+                    {product.rating} ({product.reviews})
                   </span>
                 </div>
 
                 {/* Specs */}
-                <div className="space-y-3 mb-8">
+                <div className="space-y-2 mb-6">
                   {Object.entries(product.specs).map(([key, value]) => (
                     <div
                       key={key}
-                      className="flex items-center justify-between p-3 bg-gradient-to-r from-gray-50 to-blue-50 rounded-xl border border-gray-100 group-hover:border-blue-200 transition-all duration-300"
+                      className="flex items-center justify-between p-3 bg-white/5 rounded-lg border border-white/5"
                     >
-                      <div className="flex items-center space-x-3">
-                        <div className="p-2 bg-white rounded-lg shadow-sm">
+                      <div className="flex items-center gap-2">
+                        <div className="text-cyan-400">
                           {getSpecIcon(key)}
                         </div>
-                        <span className="text-sm font-semibold text-gray-700">
-                          {key}
-                        </span>
+                        <span className="text-sm text-gray-400">{key}</span>
                       </div>
-                      <span className="text-sm font-bold text-gray-900 bg-white px-3 py-1 rounded-lg shadow-sm">
+                      <span className="text-sm font-medium text-white">
                         {value}
                       </span>
                     </div>
@@ -193,11 +232,13 @@ export default function SampleComparison() {
                 </div>
 
                 {/* Price */}
-                <div className="text-center mb-8">
-                  <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-4 rounded-xl shadow-lg">
-                    <span className="text-3xl font-bold">₹{product.price}</span>
-                    <div className="text-blue-100 text-sm mt-1">
-                      Best Price Guaranteed
+                <div className="text-center mb-6">
+                  <div className="bg-gradient-to-r from-cyan-500 to-purple-500 p-4 rounded-xl">
+                    <span className="text-2xl font-bold text-white">
+                      ₹{product.price}
+                    </span>
+                    <div className="text-white/80 text-xs mt-1">
+                      Best Price
                     </div>
                   </div>
                 </div>
@@ -205,30 +246,35 @@ export default function SampleComparison() {
                 {/* Compare Button */}
                 <button
                   onClick={() => handleCompare(product.id)}
-                  className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white py-4 px-6 rounded-xl font-bold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
+                  className="w-full bg-white/10 hover:bg-white/20 border border-white/10 hover:border-cyan-500/30 text-white py-3 px-6 rounded-lg font-medium transition-all duration-300 flex items-center justify-center gap-2"
                 >
-                  <TrendingUp className="w-5 h-5" />
+                  <TrendingUp className="w-4 h-4" />
                   Compare Now
                 </button>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
 
-        {/* Quick Comparison Table */}
-        {/* (unchanged from your version) */}
         {/* CTA */}
-        <div className="text-center mt-12">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          viewport={{ once: true }}
+          className="text-center"
+        >
           <button
             onClick={() => navigate("/products")}
-            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-10 py-4 rounded-xl font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+            className="bg-gradient-to-r from-cyan-500 to-purple-500 hover:opacity-90 text-white px-8 py-4 rounded-lg font-medium transition-opacity inline-flex items-center gap-2"
           >
             View All Products
+            <ArrowRight className="w-5 h-5" />
           </button>
-          <p className="text-gray-500 mt-4">
+          <p className="text-gray-500 text-sm mt-4">
             Discover more products and make smarter choices
           </p>
-        </div>
+        </motion.div>
       </div>
     </div>
   );

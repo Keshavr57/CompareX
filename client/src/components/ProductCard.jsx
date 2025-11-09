@@ -1,91 +1,173 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useCompare } from "../context/CompareContext";
+import { Heart, Eye, Store, TrendingUp, Star, Plus, X } from "lucide-react";
 
-export default function ProductCard({ product, isHighlighted = false }) {
+export default function ProductCard({ product, isHighlighted = false, onViewDetails }) {
+  const navigate = useNavigate();
   const { addToCompare, removeFromCompare, compareList } = useCompare();
   const isSelected = compareList.some((p) => p.id === product.id);
+  const [isFavorite, setIsFavorite] = useState(() => {
+    const wishlist = JSON.parse(localStorage.getItem("wishlist") || "[]");
+    return wishlist.some((p) => p.id === product.id);
+  });
+
+  const toggleFavorite = (e) => {
+    e.stopPropagation();
+    const wishlist = JSON.parse(localStorage.getItem("wishlist") || "[]");
+    if (isFavorite) {
+      const updated = wishlist.filter((p) => p.id !== product.id);
+      localStorage.setItem("wishlist", JSON.stringify(updated));
+      setIsFavorite(false);
+    } else {
+      wishlist.push(product);
+      localStorage.setItem("wishlist", JSON.stringify(wishlist));
+      setIsFavorite(true);
+    }
+  };
 
   return (
-    <div className={`group bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 flex flex-col h-full transform hover:-translate-y-1
-      ${isHighlighted ? "ring-2 ring-indigo-400 shadow-lg" : ""}`}>
+    <div className={`group rounded-2xl border ${isHighlighted ? 'border-cyan-500/50' : 'border-white/10'} bg-white/5 hover:bg-white/10 hover:border-cyan-500/30 transition-all duration-300 overflow-hidden flex flex-col h-full`}>
       
       {/* Image Container */}
-      <div className="relative overflow-hidden bg-gray-50 aspect-square">
+      <div className="relative overflow-hidden bg-black/20 aspect-square">
         <img 
           src={product.image_url} 
           alt={product.name} 
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" 
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
         />
-        {isSelected && (
-          <div className="absolute top-3 right-3 bg-indigo-600 text-white rounded-full p-2 shadow-lg">
-            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-            </svg>
+        
+        {/* Overlay Actions */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onViewDetails?.(product);
+              }}
+              className="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white p-2 rounded-lg transition-all"
+              title="View Details"
+            >
+              <Eye className="w-4 h-4" />
+            </button>
+            <button
+              onClick={toggleFavorite}
+              className={`${isFavorite ? 'bg-cyan-500 text-white' : 'bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white'} p-2 rounded-lg transition-all`}
+              title={isFavorite ? "Remove from Wishlist" : "Add to Wishlist"}
+            >
+              <Heart className={`w-4 h-4 ${isFavorite ? 'fill-current' : ''}`} />
+            </button>
           </div>
-        )}
+        </div>
+        
+        {/* Badges */}
+        <div className="absolute top-3 left-3 right-3 flex justify-between items-start">
+          {isSelected && (
+            <div className="bg-cyan-500 text-white rounded-lg px-3 py-1 text-xs font-semibold">
+              Selected
+            </div>
+          )}
+          {product.trending && (
+            <div className="bg-gradient-to-r from-cyan-500 to-purple-500 text-white rounded-lg px-3 py-1 text-xs font-semibold flex items-center gap-1 ml-auto">
+              <TrendingUp className="w-3 h-3" />
+              Trending
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Content Container */}
       <div className="p-5 flex-1 flex flex-col">
         <div className="flex-1">
-          <h3 className="text-xl font-bold text-gray-900 mb-1 line-clamp-2 group-hover:text-indigo-600 transition-colors">
+          <h3 className="text-lg font-semibold text-white mb-1 line-clamp-2">
             {product.name}
           </h3>
           
-          <p className="text-sm text-gray-500 mb-3 font-medium">
+          <p className="text-sm text-gray-500 mb-3">
             {product.brand}
           </p>
 
           <div className="flex items-center justify-between mb-4">
-            <p className="text-2xl font-bold text-indigo-600">
-            ₹{product.price}
-            </p>
+            <div>
+              <p className="text-2xl font-bold text-white">
+                ₹{product.price?.toLocaleString('en-IN') || product.price}
+              </p>
+              {product.originalPrice && (
+                <p className="text-xs text-gray-500 line-through">₹{product.originalPrice?.toLocaleString('en-IN')}</p>
+              )}
+            </div>
             
             {product.rating && (
-              <div className="flex items-center gap-1 bg-amber-50 px-2 py-1 rounded-full">
-                <svg className="w-4 h-4 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                </svg>
-                <span className="text-sm font-semibold text-amber-700">
+              <div className="flex items-center gap-1 bg-white/10 px-3 py-1.5 rounded-lg border border-white/10">
+                <Star className="w-4 h-4 text-cyan-400 fill-cyan-400" />
+                <span className="text-sm font-semibold text-white">
                   {product.rating}
                 </span>
               </div>
             )}
           </div>
+
+          {/* Quick Specs */}
+          {(product.ram || product.storage) && (
+            <div className="flex gap-2 mb-4 flex-wrap">
+              {product.ram && (
+                <span className="text-xs bg-cyan-500/10 text-cyan-400 px-3 py-1 rounded-lg font-medium border border-cyan-500/20">
+                  {product.ram}
+                </span>
+              )}
+              {product.storage && (
+                <span className="text-xs bg-purple-500/10 text-purple-400 px-3 py-1 rounded-lg font-medium border border-purple-500/20">
+                  {product.storage}
+                </span>
+              )}
+            </div>
+          )}
         </div>
 
-        {/* Action Button */}
-        <button
-          onClick={() => (isSelected ? removeFromCompare(product.id) : addToCompare(product))}
-          className={`w-full py-3 px-4 rounded-xl font-semibold text-sm transition-all duration-200 flex items-center justify-center gap-2 ${
-            isSelected 
-              ? "bg-red-50 text-red-600 hover:bg-red-100 border border-red-200" 
-              : "bg-indigo-600 text-white hover:bg-indigo-700 shadow-md hover:shadow-lg"
-          }`}
-        >
-          {isSelected ? (
-            <>
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-              Remove from Compare
-            </>
-          ) : (
-            <>
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-              </svg>
-              Add to Compare
-            </>
-          )}
-        </button>
+        {/* Action Buttons */}
+        <div className="space-y-2">
+          {/* Find Best Price Button */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              sessionStorage.setItem('selectedProduct', JSON.stringify(product));
+              navigate(`/best-price/${product.id}`);
+            }}
+            className="w-full py-3 px-4 rounded-lg font-medium text-sm transition-all flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white border border-white/10 hover:border-cyan-500/30"
+          >
+            <Store className="w-4 h-4" />
+            Where to Buy
+          </button>
+
+          {/* Add to Compare Button */}
+          <button
+            onClick={() => (isSelected ? removeFromCompare(product.id) : addToCompare(product))}
+            className={`w-full py-3 px-4 rounded-lg font-medium text-sm transition-all flex items-center justify-center gap-2 ${
+              isSelected 
+                ? "bg-white/10 hover:bg-white/20 text-white border border-white/10" 
+                : "bg-gradient-to-r from-cyan-500 to-purple-500 text-white hover:opacity-90"
+            }`}
+          >
+            {isSelected ? (
+              <>
+                <X className="w-4 h-4" />
+                Remove
+              </>
+            ) : (
+              <>
+                <Plus className="w-4 h-4" />
+                Add to Compare
+              </>
+            )}
+          </button>
+        </div>
 
         {/* Highlighted Message */}
         {isHighlighted && (
-          <div className="mt-3 p-3 bg-indigo-50 rounded-lg border border-indigo-200">
+          <div className="mt-3 p-3 bg-cyan-500/10 rounded-lg border border-cyan-500/20">
             <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-indigo-500 rounded-full animate-pulse"></div>
-              <span className="text-xs text-indigo-700 font-semibold">
+              <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div>
+              <span className="text-xs text-cyan-400 font-medium">
                 Preselected — choose other products to compare
               </span>
             </div>

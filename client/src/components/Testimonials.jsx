@@ -1,97 +1,127 @@
+import { motion } from "framer-motion";
+import { Quote, Star, Users } from "lucide-react";
+
 export default function Testimonials() {
-    return (
-        <div className="text-center">
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-800">What Our Users Say</h1>
-            <p className="text-sm md:text-base text-gray-500 mt-4">
-                Thousands of shoppers have already found their perfect device with our product comparison tool
-            </p>
+  const testimonials = [
+    {
+      text: "I compared multiple laptops side by side before buying. The specs breakdown like RAM, storage, and processor speed saved me hours of research.",
+      name: "Donald Jackman",
+      image: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=100",
+    },
+    {
+      text: "Choosing between smartphones was confusing, but this site showed camera quality, battery, and display side by side. I picked the right one without overpaying.",
+      name: "Richard Nelson",
+      image: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=100",
+    },
+    {
+      text: "Comparing smartwatches was easy — I could filter by fitness features, battery life, and price. Ended up finding the best match for my lifestyle.",
+      name: "James Washington",
+      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=100&h=100&auto=format&fit=crop",
+    },
+  ];
 
-            <div className="flex flex-wrap justify-center gap-5 mt-16 text-left">
-                {/* Testimonial 1 */}
-                <div className="w-80 flex flex-col items-start border border-gray-200 p-5 rounded-lg bg-white">
-                    {/* Quote Icon */}
-                    <svg width="44" height="40" viewBox="0 0 44 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M33.172 5.469q2.555 0 4.547 1.547a7.4 7.4 0 0 1 2.695 4.007q.47 1.711.469 3.61 0 2.883-1.125 5.86a22.8 22.8 0 0 1-3.094 5.577 33 33 0 0 1-4.57 4.922A35 35 0 0 1 26.539 35l-3.398-3.398q5.296-4.243 7.218-6.563 1.946-2.32 2.016-4.617-2.86-.329-4.781-2.461-1.923-2.133-1.922-4.992 0-3.117 2.18-5.297 2.202-2.203 5.32-2.203m-20.625 0q2.555 0 4.547 1.547a7.4 7.4 0 0 1 2.695 4.007q.47 1.711.469 3.61 0 2.883-1.125 5.86a22.8 22.8 0 0 1-3.094 5.577 33 33 0 0 1-4.57 4.922A35 35 0 0 1 5.914 35l-3.398-3.398q5.296-4.243 7.218-6.563 1.946-2.32 2.016-4.617-2.86-.329-4.781-2.461-1.922-2.133-1.922-4.992 0-3.117 2.18-5.297 2.202-2.203 5.32-2.203" fill="#2563EB"/>
-                    </svg>
+  return (
+    <div className="py-20 px-6 bg-black relative overflow-hidden">
+      {/* Subtle Background */}
+      <div className="absolute inset-0">
+        <div 
+          className="absolute inset-0 opacity-[0.02]"
+          style={{
+            backgroundImage: `
+              linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px)
+            `,
+            backgroundSize: '100px 100px',
+          }}
+        ></div>
+      </div>
 
-                    {/* Stars */}
-                    <div className="flex items-center justify-center mt-3 gap-1">
-                        {Array(5).fill(0).map((_, i) => (
-                            <svg key={i} width="16" height="15" viewBox="0 0 16 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M7.524.464a.5.5 0 0 1 .952 0l1.432 4.41a.5.5 0 0 0 .476.345h4.637a.5.5 0 0 1 .294.904L11.563 8.85a.5.5 0 0 0-.181.559l1.433 4.41a.5.5 0 0 1-.77.559L8.294 11.65a.5.5 0 0 0-.588 0l-3.751 2.726a.5.5 0 0 1-.77-.56l1.433-4.41a.5.5 0 0 0-.181-.558L.685 6.123A.5.5 0 0 1 .98 5.22h4.637a.5.5 0 0 0 .476-.346z" fill="#FF532E"/>
-                            </svg>
-                        ))}
-                    </div>
+      {/* Ambient Glow */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div
+          className="absolute top-1/2 left-1/3 w-[600px] h-[600px] rounded-full opacity-10 blur-[120px]"
+          style={{
+            background: 'radial-gradient(circle, rgba(6, 182, 212, 0.3), transparent 70%)',
+          }}
+        />
+      </div>
 
-                    {/* Text */}
-                    <p className="text-sm mt-3 text-gray-500">
-                        I compared multiple laptops side by side before buying. The specs breakdown like RAM, storage, and processor speed saved me hours of research.
-                    </p>
+      <div className="relative z-10 max-w-7xl mx-auto">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="text-center mb-16"
+        >
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 mb-6">
+            <Users className="w-4 h-4 text-cyan-400" />
+            <span className="text-xs font-semibold text-cyan-400 tracking-wider uppercase">
+              User Reviews
+            </span>
+          </div>
+          
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 text-white">
+            What Our Users Say
+          </h2>
+          <p className="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto">
+            Thousands of shoppers have already found their perfect device
+          </p>
+        </motion.div>
 
-                    {/* User */}
-                    <div className="flex items-center gap-3 mt-4">
-                        <img className="h-12 w-12 rounded-full" src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=100" alt="userImage1" />
-                        <div>
-                            <h2 className="text-lg text-gray-900 font-medium">Donald Jackman</h2>
-                      
-                        </div>
-                    </div>
+        {/* Testimonials Grid */}
+        <div className="grid md:grid-cols-3 gap-6">
+          {testimonials.map((testimonial, idx) => (
+            <motion.div
+              key={idx}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ 
+                duration: 0.5, 
+                delay: idx * 0.1,
+              }}
+              viewport={{ once: true }}
+              className="group"
+            >
+              <div className="relative p-6 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 hover:border-cyan-500/30 transition-all duration-300 h-full flex flex-col">
+                {/* Quote Icon */}
+                <Quote className="w-8 h-8 text-cyan-400 mb-4" />
+
+                {/* Stars */}
+                <div className="flex gap-1 mb-4">
+                  {Array(5).fill(0).map((_, i) => (
+                    <Star
+                      key={i}
+                      className="w-4 h-4 text-cyan-400 fill-cyan-400"
+                    />
+                  ))}
                 </div>
 
-                {/* Testimonial 2 */}
-                <div className="w-80 flex flex-col items-start border border-gray-200 p-5 rounded-lg bg-white">
-                    <svg width="44" height="40" viewBox="0 0 44 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M33.172 5.469q2.555 0 4.547 1.547a7.4 7.4 0 0 1 2.695 4.007q.47 1.711.469 3.61 0 2.883-1.125 5.86a22.8 22.8 0 0 1-3.094 5.577 33 33 0 0 1-4.57 4.922A35 35 0 0 1 26.539 35l-3.398-3.398q5.296-4.243 7.218-6.563 1.946-2.32 2.016-4.617-2.86-.329-4.781-2.461-1.923-2.133-1.922-4.992 0-3.117 2.18-5.297 2.202-2.203 5.32-2.203m-20.625 0q2.555 0 4.547 1.547a7.4 7.4 0 0 1 2.695 4.007q.47 1.711.469 3.61 0 2.883-1.125 5.86a22.8 22.8 0 0 1-3.094 5.577 33 33 0 0 1-4.57 4.922A35 35 0 0 1 5.914 35l-3.398-3.398q5.296-4.243 7.218-6.563 1.946-2.32 2.016-4.617-2.86-.329-4.781-2.461-1.923-2.133-1.922-4.992 0-3.117 2.18-5.297 2.202-2.203 5.32-2.203" fill="#2563EB"/>
-                    </svg>
+                {/* Text */}
+                <p className="text-sm text-gray-400 leading-relaxed mb-6 flex-grow">
+                  {testimonial.text}
+                </p>
 
-                    <div className="flex items-center justify-center mt-3 gap-1">
-                        {Array(5).fill(0).map((_, i) => (
-                            <svg key={i} width="16" height="15" viewBox="0 0 16 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M7.524.464a.5.5 0 0 1 .952 0l1.432 4.41a.5.5 0 0 0 .476.345h4.637a.5.5 0 0 1 .294.904L11.563 8.85a.5.5 0 0 0-.181.559l1.433 4.41a.5.5 0 0 1-.77.559L8.294 11.65a.5.5 0 0 0-.588 0l-3.751 2.726a.5.5 0 0 1-.77-.56l1.433-4.41a.5.5 0 0 0-.181-.558L.685 6.123A.5.5 0 0 1 .98 5.22h4.637a.5.5 0 0 0 .476-.346z" fill="#FF532E"/>
-                            </svg>
-                        ))}
-                    </div>
-
-                    <p className="text-sm mt-3 text-gray-500">
-                        Choosing between smartphones was confusing, but this site showed camera quality, battery, and display side by side. I picked the right one without overpaying.
-                    </p>
-
-                    <div className="flex items-center gap-3 mt-4">
-                        <img className="h-12 rounded-full" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=100" alt="userImage2" />
-                        <div>
-                            <h2 className="text-lg text-gray-900 font-medium">Richard Nelson</h2>
-                       
-                        </div>
-                    </div>
+                {/* User */}
+                <div className="flex items-center gap-3">
+                  <img
+                    className="h-12 w-12 rounded-full border border-white/10"
+                    src={testimonial.image}
+                    alt={testimonial.name}
+                  />
+                  <div>
+                    <h3 className="text-white font-semibold">
+                      {testimonial.name}
+                    </h3>
+                    <p className="text-xs text-gray-500">Verified User</p>
+                  </div>
                 </div>
-
-                {/* Testimonial 3 */}
-                <div className="w-80 flex flex-col items-start border border-gray-200 p-5 rounded-lg bg-white">
-                    <svg width="44" height="40" viewBox="0 0 44 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M33.172 5.469q2.555 0 4.547 1.547a7.4 7.4 0 0 1 2.695 4.007q.47 1.711.469 3.61 0 2.883-1.125 5.86a22.8 22.8 0 0 1-3.094 5.577 33 33 0 0 1-4.57 4.922A35 35 0 0 1 26.539 35l-3.398-3.398q5.296-4.243 7.218-6.563 1.946-2.32 2.016-4.617-2.86-.329-4.781-2.461-1.923-2.133-1.922-4.992 0-3.117 2.18-5.297 2.202-2.203 5.32-2.203m-20.625 0q2.555 0 4.547 1.547a7.4 7.4 0 0 1 2.695 4.007q.47 1.711.469 3.61 0 2.883-1.125 5.86a22.8 22.8 0 0 1-3.094 5.577 33 33 0 0 1-4.57 4.922A35 35 0 0 1 5.914 35l-3.398-3.398q5.296-4.243 7.218-6.563 1.946-2.32 2.016-4.617-2.86-.329-4.781-2.461-1.923-2.133-1.922-4.992 0-3.117 2.18-5.297 2.202-2.203 5.32-2.203" fill="#2563EB"/>
-                    </svg>
-
-                    <div className="flex items-center justify-center mt-3 gap-1">
-                        {Array(5).fill(0).map((_, i) => (
-                            <svg key={i} width="16" height="15" viewBox="0 0 16 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M7.524.464a.5.5 0 0 1 .952 0l1.432 4.41a.5.5 0 0 0 .476.345h4.637a.5.5 0 0 1 .294.904L11.563 8.85a.5.5 0 0 0-.181.559l1.433 4.41a.5.5 0 0 1-.77.559L8.294 11.65a.5.5 0 0 0-.588 0l-3.751 2.726a.5.5 0 0 1-.77-.56l1.433-4.41a.5.5 0 0 0-.181-.558L.685 6.123A.5.5 0 0 1 .98 5.22h4.637a.5.5 0 0 0 .476-.346z" fill="#FF532E"/>
-                            </svg>
-                        ))}
-                    </div>
-
-                    <p className="text-sm mt-3 text-gray-500">
-                        Comparing smartwatches was easy — I could filter by fitness features, battery life, and price. Ended up finding the best match for my lifestyle.
-                    </p>
-
-                    <div className="flex items-center gap-3 mt-4">
-                        <img className="h-12 rounded-full" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=100&h=100&auto=format&fit=crop" alt="userImage3" />
-                        <div>
-                            <h2 className="text-lg text-gray-900 font-medium">James Washington</h2>
-                        
-                        </div>
-                    </div>
-                </div>
-            </div>
+              </div>
+            </motion.div>
+          ))}
         </div>
-    );
-};
+      </div>
+    </div>
+  );
+}
