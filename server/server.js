@@ -7,8 +7,21 @@ import dotenv from 'dotenv';
 dotenv.config();
 const app = express();
 
-// Middleware
-app.use(cors());
+// Middleware - Configure CORS to allow Vercel frontend
+const corsOptions = {
+  origin: [
+    'http://localhost:5173',
+    'http://localhost:3000',
+    'https://compare-x-vercel.app',
+    'https://*.vercel.app',
+    /\.vercel\.app$/
+  ],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // ==================== PRODUCT ROUTES ====================
