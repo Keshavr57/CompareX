@@ -12,8 +12,7 @@ const corsOptions = {
   origin: [
     'http://localhost:5173',
     'http://localhost:3000',
-    'https://compare-x-vercel.app',
-    'https://*.vercel.app',
+    'https://compare-x.vercel.app',
     /\.vercel\.app$/
   ],
   credentials: true,

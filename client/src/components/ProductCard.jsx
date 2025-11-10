@@ -90,10 +90,12 @@ export default function ProductCard({ product, isHighlighted = false, onViewDeta
           <div className="flex items-center justify-between mb-4">
             <div>
               <p className="text-2xl font-bold text-white">
-                ₹{product.price?.toLocaleString('en-IN') || product.price}
+                {typeof product.price === 'string' ? product.price : `₹${product.price?.toLocaleString('en-IN')}`}
               </p>
               {product.originalPrice && (
-                <p className="text-xs text-gray-500 line-through">₹{product.originalPrice?.toLocaleString('en-IN')}</p>
+                <p className="text-xs text-gray-500 line-through">
+                  {typeof product.originalPrice === 'string' ? product.originalPrice : `₹${product.originalPrice?.toLocaleString('en-IN')}`}
+                </p>
               )}
             </div>
             

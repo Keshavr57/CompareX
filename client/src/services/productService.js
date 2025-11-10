@@ -61,16 +61,23 @@ const createMockTechProducts = () => {
   
   mobileModels.forEach((model, i) => {
     const brand = model.split(' ')[0];
+    const price = 300 + Math.floor(Math.random() * 1500);
     products.push({
       id: i + 1,
-      title: model,
+      name: model,
       brand: brand,
-      price: 300 + Math.floor(Math.random() * 1500),
-      category: 'smartphones',
-      thumbnail: `https://picsum.photos/400/400?random=${i + 1}`,
-      rating: (3.5 + Math.random() * 1.5).toFixed(1),
+      price: `₹${price.toLocaleString()}`,
+      category: 'Mobile',
+      image_url: `https://picsum.photos/400/400?random=${i + 1}`,
+      rating: parseFloat((3.5 + Math.random() * 1.5).toFixed(1)),
       description: `Premium smartphone with latest features`,
-      stock: 20 + Math.floor(Math.random() * 80)
+      stock: 20 + Math.floor(Math.random() * 80),
+      ram: '8GB',
+      storage: '128GB',
+      display: '6.5" AMOLED',
+      battery: '5000mAh',
+      processor: 'Snapdragon 8 Gen 2',
+      camera: '50MP'
     });
   });
   
@@ -88,16 +95,23 @@ const createMockTechProducts = () => {
   
   laptopModels.forEach((model, i) => {
     const brand = model.split(' ')[0];
+    const price = 600 + Math.floor(Math.random() * 2500);
     products.push({
       id: i + 100,
-      title: model,
+      name: model,
       brand: brand,
-      price: 600 + Math.floor(Math.random() * 2500),
-      category: 'laptops',
-      thumbnail: `https://picsum.photos/400/400?random=${i + 100}`,
-      rating: (3.8 + Math.random() * 1.2).toFixed(1),
+      price: `₹${price.toLocaleString()}`,
+      category: 'Laptop',
+      image_url: `https://picsum.photos/400/400?random=${i + 100}`,
+      rating: parseFloat((3.8 + Math.random() * 1.2).toFixed(1)),
       description: `High-performance laptop for work and gaming`,
-      stock: 15 + Math.floor(Math.random() * 60)
+      stock: 15 + Math.floor(Math.random() * 60),
+      ram: '16GB',
+      storage: '512GB SSD',
+      display: '15.6" FHD',
+      battery: '8 hours',
+      processor: 'Intel i7 13th Gen',
+      gpu: 'RTX 4060'
     });
   });
   
